@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Favorite Widget | Windows 바탕화면 즐겨찾기 실행 위젯</title>
+    <meta name="description" content="Favorite Widget은 Windows 10/11 바탕화면에서 앱, 파일, 링크를 빠르게 실행하는 즐겨찾기 실행 위젯입니다. 설치 파일, 화면 예시, 기능 설명을 한 페이지에서 확인할 수 있습니다.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#10151c">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:site_name" content="Favorite Widget">
+    <meta property="og:title" content="Favorite Widget | Windows 바탕화면 즐겨찾기 실행 위젯">
+    <meta property="og:description" content="앱, 파일, 링크를 바탕화면 위젯에서 바로 여는 Windows 데스크톱 실행 도구.">
+    <meta property="og:image" content="assets/screenshots/favorite-widget-main.png">
+    <meta property="og:image:alt" content="Favorite Widget 메인 위젯 화면">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Favorite Widget">
+    <meta name="twitter:description" content="Windows 바탕화면 즐겨찾기 실행 위젯">
+    <meta name="twitter:image" content="assets/screenshots/favorite-widget-main.png">
+    <meta property="og:url" content="https://sheryloe.github.io/Favorit/">
+    <link rel="canonical" href="https://sheryloe.github.io/Favorit/">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Favorite Widget",
+        "applicationCategory": "DesktopApplication",
+        "operatingSystem": "Windows 10, Windows 11",
+        "softwareVersion": "0.2.0",
+        "description": "Windows 바탕화면에서 앱, 파일, 링크를 빠르게 실행하는 즐겨찾기 위젯",
+        "downloadUrl": "assets/downloads/FavoriteWidget-0.2.0-win64.exe",
+        "screenshot": [
+          "assets/screenshots/favorite-widget-main.png",
+          "assets/screenshots/favorite-widget-settings.png"
+        ],
+        "featureList": [
+          "앱, 파일, URL 즐겨찾기 등록",
+          "실행 파일 기본 아이콘 표시",
+          "바탕화면 고정형 빠른 실행 위젯",
+          "설정 창에서 추가, 수정, 삭제",
+          "Windows 인스톨러 제공"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Favorite Widget에는 무엇을 등록할 수 있나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Windows 실행 파일(.exe), 문서/파일, 그리고 http 또는 https 링크를 즐겨찾기로 등록할 수 있습니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "어떤 Windows 버전에서 사용할 수 있나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Windows 10과 Windows 11에서 사용할 수 있습니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "설정 데이터는 어디에 저장되나요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "설정은 %LOCALAPPDATA%\\FavoriteWidget\\favorite-widget.ini 파일에 저장됩니다."
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#top">
+          <span class="brand-mark">FW</span>
+          <span class="brand-text">
+            <strong>Favorite Widget</strong>
+            <span>Windows Favorite Launcher</span>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="페이지 이동">
+          <a href="#features">기능</a>
+          <a href="#screenshots">스크린샷</a>
+          <a href="#faq">FAQ</a>
+          <a href="assets/downloads/FavoriteWidget-0.2.0-win64.exe">다운로드</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Desktop launcher for Windows</p>
+            <h1>바탕화면에서 바로 여는<br>즐겨찾기 실행 위젯</h1>
+            <p class="hero-body">
+              Favorite Widget은 Windows 10/11 데스크톱에서 앱, 파일, 링크를 한 번에 정리하고
+              바로 실행할 수 있게 만든 즐겨찾기 위젯입니다. 빠른 실행은 유지하고, 설정은 복잡하지 않게 정리했습니다.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="assets/downloads/FavoriteWidget-0.2.0-win64.exe">Windows 설치 파일</a>
+              <a class="button secondary" href="#screenshots">화면 먼저 보기</a>
+            </div>
+            <ul class="hero-meta">
+              <li>Windows 10 / 11</li>
+              <li>앱 · 파일 · URL 등록</li>
+              <li>실행 파일 아이콘 자동 표시</li>
+            </ul>
+          </div>
+
+          <div class="hero-visual" aria-label="Favorite Widget 화면 구성">
+            <figure class="visual-card visual-main">
+              <img src="assets/screenshots/favorite-widget-main.png" alt="Favorite Widget 메인 위젯 화면">
+            </figure>
+            <figure class="visual-card visual-settings">
+              <img src="assets/screenshots/favorite-widget-settings.png" alt="Favorite Widget 설정 화면">
+            </figure>
+            <div class="visual-caption">
+              <strong>빠른 실행 + 간단한 관리</strong>
+              <p>바탕화면 위젯과 설정 창을 분리해서, 실행은 빠르게 하고 관리는 차분하게 정리했습니다.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="feature-strip" id="features">
+          <article>
+            <span>01</span>
+            <h2>데스크톱 실행 동선 최소화</h2>
+            <p>자주 여는 프로그램과 파일을 바탕화면 위젯에서 바로 실행합니다.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>실행 파일 기본 아이콘 유지</h2>
+            <p>카카오톡 같은 앱은 exe 기본 아이콘을 그대로 가져와서 인지성이 좋습니다.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>GitHub Pages용 정적 소개 페이지 포함</h2>
+            <p>설치 파일, 스크린샷, 기능 설명을 바로 공개할 수 있는 `docs/` 구조를 같이 제공합니다.</p>
+          </article>
+        </section>
+
+        <section class="workflow">
+          <div class="section-heading">
+            <p class="eyebrow">How it works</p>
+            <h2>복잡한 런처 대신, 필요한 것만 남겼습니다</h2>
+          </div>
+          <div class="workflow-grid">
+            <article class="workflow-card">
+              <strong>1. 즐겨찾기 등록</strong>
+              <p>앱(.exe), 문서, 링크를 설정 창에서 추가합니다.</p>
+            </article>
+            <article class="workflow-card">
+              <strong>2. 아이콘과 이름으로 확인</strong>
+              <p>메인 위젯과 목록에서 실행 대상이 바로 구분됩니다.</p>
+            </article>
+            <article class="workflow-card">
+              <strong>3. 바탕화면에서 즉시 실행</strong>
+              <p>앱을 탐색기나 시작 메뉴로 다시 찾지 않아도 됩니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="screenshots" id="screenshots">
+          <div class="section-heading">
+            <p class="eyebrow">First use guide</p>
+            <h2>처음 사용할 때는 이렇게 보면 됩니다</h2>
+            <p class="section-body">
+              이 페이지에서 가장 헷갈리기 쉬운 부분은 설정 창과 메인 위젯의 역할입니다.
+              설정 창은 즐겨찾기를 등록하고 정리하는 화면이고, 메인 위젯은 등록한 항목을 바로 실행하는 화면입니다.
+            </p>
+          </div>
+          <div class="flow-banner" aria-label="사용 흐름 안내">
+            <article class="flow-step">
+              <span>STEP 1</span>
+              <strong>설정 창에서 등록</strong>
+              <p>앱 이름과 실행 파일 경로를 저장합니다.</p>
+            </article>
+            <article class="flow-step">
+              <span>STEP 2</span>
+              <strong>메인 위젯에서 실행</strong>
+              <p>바탕화면 위젯에서 아이콘을 눌러 바로 엽니다.</p>
+            </article>
+          </div>
+          <div class="screen-grid">
+            <figure class="screen-card wide">
+              <img src="assets/screenshots/favorite-widget-settings.png" alt="Favorite Widget 설정 창">
+              <figcaption>
+                <strong>1. 설정 창에서 즐겨찾기 등록</strong>
+                <span>왼쪽은 등록된 항목 목록, 오른쪽은 선택한 항목의 이름과 경로를 편집하는 패널입니다.</span>
+                <ul class="screen-points">
+                  <li>앱, 파일, 링크를 새로 추가할 수 있습니다.</li>
+                  <li>기존 항목을 선택해서 이름이나 경로를 수정할 수 있습니다.</li>
+                  <li>`파일 검색` 버튼으로 실행 파일을 직접 찾아 넣을 수 있습니다.</li>
+                </ul>
+              </figcaption>
+            </figure>
+            <figure class="screen-card tall">
+              <img src="assets/screenshots/favorite-widget-main.png" alt="Favorite Widget 메인 실행 위젯">
+              <figcaption>
+                <strong>2. 메인 위젯에서 바로 실행</strong>
+                <span>등록이 끝나면 바탕화면 위젯에 앱 타일이 보이고, 아이콘을 누르면 바로 실행됩니다.</span>
+                <ul class="screen-points">
+                  <li>자주 여는 항목을 한눈에 확인할 수 있습니다.</li>
+                  <li>설정 버튼으로 다시 관리 화면을 열 수 있습니다.</li>
+                  <li>닫기 버튼으로 위젯을 바로 종료할 수 있습니다.</li>
+                </ul>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="seo-copy">
+          <div class="section-heading">
+            <p class="eyebrow">Search intent</p>
+            <h2>이런 키워드로 찾는 사용자에게 맞는 페이지</h2>
+          </div>
+          <div class="seo-grid">
+            <article>
+              <h3>한국어 검색</h3>
+              <p>Windows 바탕화면 위젯, 바탕화면 실행기, 프로그램 즐겨찾기 위젯, 데스크톱 런처 같은 검색어에 맞춘 설명 구조를 넣었습니다.</p>
+            </article>
+            <article>
+              <h3>영문 검색</h3>
+              <p>Windows desktop launcher widget, favorite launcher for Windows, desktop quick launch widget 같은 표현도 함께 담았습니다.</p>
+            </article>
+            <article>
+              <h3>공유 대응</h3>
+              <p>Open Graph 메타와 대표 스크린샷을 넣어서 GitHub Pages 링크 공유 시 미리보기가 깔끔하게 보이게 했습니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="faq" id="faq">
+          <div class="section-heading">
+            <p class="eyebrow">FAQ</p>
+            <h2>자주 묻는 질문</h2>
+          </div>
+          <div class="faq-list">
+            <details open>
+              <summary>Favorite Widget에는 무엇을 등록할 수 있나요?</summary>
+              <p>실행 파일(.exe), 문서/파일, 그리고 `http` 또는 `https` 링크를 등록할 수 있습니다.</p>
+            </details>
+            <details>
+              <summary>설정은 어디에 저장되나요?</summary>
+              <p>`%LOCALAPPDATA%\FavoriteWidget\favorite-widget.ini` 파일에 저장됩니다.</p>
+            </details>
+            <details>
+              <summary>설치 없이도 실행할 수 있나요?</summary>
+              <p>가능합니다. `build/favorite_widget.exe`를 직접 실행해도 되고, 인스톨러(`FavoriteWidget-0.2.0-win64.exe`)를 사용해도 됩니다.</p>
+            </details>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Favorite Widget · Windows desktop favorite launcher widget</p>
+        <a href="assets/downloads/FavoriteWidget-0.2.0-win64.exe">설치 파일 다운로드</a>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "favorite-widget",
+  "version": "0.2.0",
+  "description": "Windows desktop favorite widget MVP in C++/Win32",
+  "private": true,
+  "main": "build/favorite_widget.exe",
+  "scripts": {
+    "configure": "cmake -S . -B build -G \"MinGW Makefiles\"",
+    "build": "cmake --build build",
+    "check": "npm run configure && npm run build",
+    "installer": "npm run configure && npm run build && cpack --config build/CPackConfig.cmake -G NSIS64 -B dist",
+    "package": "npm run configure && npm run build && cpack --config build/CPackConfig.cmake -B dist",
+    "site:preview": "python -m http.server 4173 --directory docs",
+    "start": "npm run configure && npm run build && .\\build\\favorite_widget.exe",
+    "dev": "npm run start",
+    "smoke": "npm run configure && npm run build && .\\build\\favorite_widget.exe --smoke-test"
+  }
+}
