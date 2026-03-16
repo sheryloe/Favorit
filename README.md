@@ -1,30 +1,29 @@
 # Favorite Widget
 
-Windows 바탕화면에서 자주 여는 앱, 파일, 링크를 바로 실행하는 즐겨찾기 위젯입니다.  
-`C++ + Win32 API + CMake`로 만들었고, 설치 파일과 GitHub Pages용 소개 페이지까지 같이 정리해 둔 상태입니다.
+`Favorite Widget`은 Windows 바탕화면에서 자주 쓰는 파일과 URL을 바로 실행할 수 있게 정리하는 데스크톱 런처 도구입니다.
+
+- 저장소: `https://github.com/sheryloe/Favorit`
+- GitHub Pages: `https://sheryloe.github.io/Favorit/`
+
+## 서비스 개요
+
+- 실행 파일, 문서, URL을 즐겨찾기 형태로 등록합니다.
+- 위젯처럼 빠르게 실행하는 경험을 목표로 합니다.
+- 설치 파일과 공개 소개 페이지까지 포함한 Windows 도구 프로젝트입니다.
 
 ## 핵심 기능
 
-- Windows 바탕화면 뒤쪽에 붙는 빠른 실행 위젯
 - `.exe`, 문서/파일, `http/https` 링크 등록
-- 실행 파일 기본 아이콘을 그대로 써서 타일/목록 표시
-- 별도 설정 창에서 추가, 수정, 삭제
-- NSIS 기반 Windows 인스톨러 생성
-- `docs/` 정적 페이지 포함
+- 실행 파일의 기본 아이콘 표시
+- 별도 설정 창에서 추가/수정/삭제
+- NSIS 기반 설치 파일 생성
 
-## 화면 미리보기
+## 스택
 
-![Favorite Widget main widget](docs/assets/screenshots/favorite-widget-main.png)
-![Favorite Widget settings window](docs/assets/screenshots/favorite-widget-settings.png)
-
-추가 캡처 이미지는 [docs/assets/screenshots/archive](docs/assets/screenshots/archive)에 정리했습니다.
-
-## 요구 사항
-
-- Windows 10 또는 Windows 11
-- `g++`
-- `cmake`
-- `mingw32-make`
+- C++
+- Win32 API
+- CMake
+- NSIS
 
 ## 빌드
 
@@ -45,49 +44,14 @@ npm run build
 .\build\favorite_widget.exe
 ```
 
-또는:
+## 배포 자산
 
-```powershell
-npm start
-```
+- 설치 파일: `docs/assets/downloads/FavoriteWidget-0.2.0-win64.exe`
+- 스크린샷: `docs/assets/screenshots/`
 
-## 인스톨러 생성
+## 다음 단계
 
-```powershell
-npm run installer
-```
-
-생성 결과물:
-
-- `dist/FavoriteWidget-0.2.0-win64.exe`
-- `docs/assets/downloads/FavoriteWidget-0.2.0-win64.exe`
-
-## 소개 페이지 미리보기
-
-GitHub Pages용 정적 페이지는 `docs/`에 있습니다.
-
-```powershell
-npm run site:preview
-```
-
-브라우저에서 `http://localhost:4173`을 열면 됩니다.
-
-## 스모크 테스트
-
-```powershell
-.\build\favorite_widget.exe --smoke-test
-```
-
-또는:
-
-```powershell
-npm run smoke
-```
-
-## 저장 위치
-
-설정 데이터는 아래 INI 파일에 저장됩니다.
-
-```text
-%LOCALAPPDATA%\FavoriteWidget\favorite-widget.ini
-```
+- Windows 위젯 감성의 UI 리뉴얼
+- 드래그 정렬, 검색, 그룹화
+- 전역 단축키와 시작 프로그램 등록
+- 설정 백업/복원
