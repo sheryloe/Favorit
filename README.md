@@ -1,34 +1,18 @@
-# Favorite Widget
+# Favorit
 
-`Favorite Widget`은 Windows 바탕화면에서 자주 쓰는 파일과 URL을 바로 실행할 수 있게 정리하는 데스크톱 런처 도구입니다.
-
-- 저장소: `https://github.com/sheryloe/Favorit`
-- GitHub Pages: `https://sheryloe.github.io/Favorit/`
 
 ## 서비스 개요
 
-- 실행 파일, 문서, URL을 즐겨찾기 형태로 등록합니다.
-- 위젯처럼 빠르게 실행하는 경험을 목표로 합니다.
-- 설치 파일과 공개 소개 페이지까지 포함한 Windows 도구 프로젝트입니다.
-
-## 핵심 기능
-
-- `.exe`, 문서/파일, `http/https` 링크 등록
-- 실행 파일의 기본 아이콘 표시
-- 별도 설정 창에서 추가/수정/삭제
-- NSIS 기반 설치 파일 생성
-
-## 스택
-
+- 딥 블랙 배경과 네온 시안(Neon Cyan) 액센트를 활용한 HUD 감성의 데스크톱 위젯입니다.
+- 전역 단축키를 통해 게임 중이거나 전체화면 작업 중에도 위젯을 호출하거나 다이렉트로 프로그램을 실행할 수 있습니다.
+-
+- **모든 항목 지원:** `.exe` 실행 파일, 문서, 폴더, `http/https` 웹 링크 지원
+-t
 - C++
 - Win32 API
 - CMake
 - NSIS
-
-## 빌드
-
-```powershell
-cmake -S . -B build -G "MinGW Makefiles"
+d -G "MinGW Makefiles"
 cmake --build build
 ```
 

@@ -68,6 +68,8 @@ private:
     HWND status_label_ = nullptr;
     std::vector<HWND> favorite_buttons_;
     int scroll_offset_ = 0;
+    int target_scroll_offset_ = 0;
+    UINT_PTR scroll_timer_id_ = 0;
 
     void CreateFonts();
     void CreateControls();
