@@ -68,8 +68,6 @@ private:
     HWND status_label_ = nullptr;
     std::vector<HWND> favorite_buttons_;
     int scroll_offset_ = 0;
-    int target_scroll_offset_ = 0;
-    UINT_PTR scroll_timer_id_ = 0;
 
     void CreateFonts();
     void CreateControls();
@@ -191,6 +189,8 @@ public:
     SettingsWindow* settings_window() const { return settings_window_; }
 
     void OpenSettingsWindow();
+    bool LaunchSettingsWindow();
+    void ReloadFromStorage();
     void OnSettingsClosed();
     bool CreateFavorite(const std::wstring& label, const std::wstring& kind, const std::wstring& target, std::wstring& error);
     bool UpdateFavorite(const std::wstring& id, const std::wstring& label, const std::wstring& kind, const std::wstring& target, std::wstring& error);
@@ -202,10 +202,20 @@ public:
 private:
     HINSTANCE instance_;
     bool smoke_test_;
+    std::wstring settings_app_path_;
     Storage storage_;
     AppState state_;
     std::unique_ptr<MainWidgetWindow> main_window_;
     SettingsWindow* settings_window_ = nullptr;
 
+    HANDLE settings_process_handle_ = nullptr;
+    std::thread settings_watcher_thread_;
+    std::atomic<bool> settings_watcher_running_ = false;
+    std::atomic<bool> settings_launch_in_progress_ = false;
+
     bool Persist(std::wstring* error = nullptr);
+    bool ResolveSettingsExePath();
+    bool LaunchSettingsFallback();
+    void StartSettingsWatcher();
+    void StopSettingsWatcher();
 };

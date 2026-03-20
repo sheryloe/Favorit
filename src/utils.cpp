@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cwctype>
 #include <objbase.h>
 #include <sstream>
 

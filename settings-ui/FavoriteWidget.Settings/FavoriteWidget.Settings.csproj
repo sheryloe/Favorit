@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <RootNamespace>FavoriteWidget.Settings</RootNamespace>
+    <ApplicationTitle>Favorite Widget 설정</ApplicationTitle>
+    <ApplicationDescription>Favorite Widget 설정 툴</ApplicationDescription>
+    <ApplicationDisplayName>Favorite Widget 설정</ApplicationDisplayName>
+    <ApplicationIcon>Assets\StoreLogo.png</ApplicationIcon>
+    <AssemblyName>FavoriteWidget.Settings</AssemblyName>
+    <UseWinUI>true</UseWinUI>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Package.appxmanifest" />
+    <Content Include="Assets\**\*" />
+    <Content Include="Properties\**\*" />
+  </ItemGroup>
+
+</Project>

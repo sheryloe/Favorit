@@ -5,3 +5,8 @@ artifacts/
 build/
 dist/
 .DS_Store
+
+# Generated WinUI artifacts
+settings-ui/FavoriteWidget.Settings/bin/
+settings-ui/FavoriteWidget.Settings/obj/
+

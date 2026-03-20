@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Favorite Widget | Windows 위젯처럼 쓰는 즐겨찾기 런처</title>
-  <meta name="description" content="Windows 바탕화면에서 파일과 URL을 위젯처럼 정리해 바로 실행하는 Favorite Widget 소개 페이지">
+  <title>Favorite Widget | Windows Shortcut Launcher</title>
+  <meta name="description" content="Favorite Widget is a lightweight Windows launcher that opens applications, folders, and URLs quickly. Settings UI is now separated into WinUI 3 while maintaining the same INI format.">
   <meta name="theme-color" content="#5f7ea7">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Favorite Widget | Windows 위젯처럼 쓰는 즐겨찾기 런처">
-  <meta property="og:description" content="파일, 폴더, URL을 빠르게 실행하는 Windows 데스크톱 런처">
+  <meta property="og:title" content="Favorite Widget | Windows Shortcut Launcher">
+  <meta property="og:description" content="Open apps, folders, and URLs in seconds with a small desktop widget and dedicated WinUI 3 settings app.">
   <meta property="og:url" content="https://sheryloe.github.io/Favorit/">
   <meta property="og:image" content="https://sheryloe.github.io/Favorit/assets/screenshots/favorite-widget-main.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -101,29 +101,28 @@
       </div>
       <div class="window-body hero-grid">
         <div class="hero-copy">
-          <p style="margin-top: 0; margin-bottom: 10px;">Windows Favorite Launcher</p>
-          <h1>바탕화면에서 바로 여는<br>윈도우 위젯형 즐겨찾기 런처</h1>
+          <p style="margin-top: 0; margin-bottom: 10px;">Windows shortcut launcher</p>
+          <h1>Launch apps, folders, and URLs in one compact widget.</h1>
           <p style="margin-top: 18px;">
-            Favorite Widget은 자주 쓰는 실행 파일, 문서, URL을 Windows 바탕화면에서
-            위젯처럼 정리해 두고 바로 실행할 수 있게 만든 데스크톱 유틸리티입니다.
-            목표는 복잡한 런처가 아니라 “손이 가는 자리”에 두는 빠른 실행 경험입니다.
+            Favorite Widget keeps the existing INI format and adds a separated WinUI 3 settings app.
+            You can still use an existing `favorite-widget.ini` file and switch to the modern settings window anytime.
           </p>
           <div class="button-row">
-            <a href="assets/downloads/FavoriteWidget-0.2.0-win64.exe"><button>설치 파일 받기</button></a>
-            <a href="https://github.com/sheryloe/Favorit"><button>GitHub 보기</button></a>
+            <a href="assets/downloads/FavoriteWidget-0.2.0-win64.exe"><button>Download</button></a>
+            <a href="https://github.com/sheryloe/Favorit"><button>GitHub</button></a>
           </div>
           <ul style="margin-top: 18px;">
             <li>Windows 10 / 11</li>
-            <li>파일, 폴더, URL 등록</li>
-            <li>설정 창에서 추가 / 수정 / 삭제</li>
-            <li>설치 파일과 공개 페이지 동시 제공</li>
+            <li>Open apps, folders, and URL shortcuts</li>
+            <li>Add, edit, and remove favorites</li>
+            <li>WinUI 3 settings app with instant file-sync</li>
           </ul>
         </div>
         <div class="card-stack">
           <img src="assets/screenshots/favorite-widget-main.png" alt="Favorite Widget main screenshot">
           <div class="mini-card">
-            <h3>왜 지금 더 좋아질 수 있나</h3>
-            <p class="card-copy">현재 구조만으로도 충분히 쓸 만하지만, 디자인을 좀 더 Windows 위젯답게 밀어 올리면 서비스 완성도가 확 올라갑니다.</p>
+            <h3>One-window workflow</h3>
+            <p class="card-copy">Keep widget usage lightweight and launch a full settings tool only when needed.</p>
           </div>
         </div>
       </div>
@@ -141,7 +140,7 @@
         </div>
         <div class="window-body">
           <img src="assets/screenshots/favorite-widget-main.png" alt="Main widget screenshot">
-          <p style="margin-top: 14px;">자주 쓰는 실행 대상이 눈에 띄는 위치에 배치됩니다.</p>
+          <p style="margin-top: 14px;">Main widget UI to run registered favorites in one click.</p>
         </div>
       </div>
       <div class="window active">
@@ -151,7 +150,7 @@
         </div>
         <div class="window-body">
           <img src="assets/screenshots/favorite-widget-settings.png" alt="Settings screenshot">
-          <p style="margin-top: 14px;">추가, 수정, 삭제가 별도 설정 창에서 이루어집니다.</p>
+          <p style="margin-top: 14px;">Settings is now a separate WinUI 3 app with list + form + command bar.</p>
         </div>
       </div>
       <div class="window active">
@@ -160,11 +159,11 @@
           <div class="title-bar-controls"><button aria-label="Close"></button></div>
         </div>
         <div class="window-body">
-          <p class="section-title" style="font-size: 1.35rem; font-weight: 700;">지금 좋은 점</p>
+          <p class="section-title" style="font-size: 1.35rem; font-weight: 700;">Current plan</p>
           <ul>
-            <li>설치 파일이 이미 준비되어 있습니다.</li>
-            <li>스크린샷 자산과 Pages 설명 페이지가 있습니다.</li>
-            <li>위젯형 콘셉트가 분명해 개선 방향이 뚜렷합니다.</li>
+            <li>Keep INI compatibility for existing users.</li>
+            <li>Update GitHub Pages/docs/wiki when UI or behavior changes.</li>
+            <li>Introduce automated test container and screenshot preprocessing.</li>
           </ul>
         </div>
       </div>
@@ -177,21 +176,21 @@
       </div>
       <div class="window-body todo-grid">
         <div class="mini-card">
-          <h3>디자인 리뉴얼</h3>
-          <p class="card-copy">실제 Windows 위젯처럼 보이는 패딩, 그림자, 밀도, 아이콘 시스템을 더 강하게 가져갑니다.</p>
+          <h3>Delivery</h3>
+          <p class="card-copy">WinUI settings window is now integrated; widget reload happens automatically on INI change.</p>
         </div>
         <div class="mini-card">
-          <h3>사용성 강화</h3>
-          <p class="card-copy">드래그 정렬, 검색, 그룹화, 전역 단축키가 들어가면 완성도가 크게 올라갑니다.</p>
+          <h3>Roadmap</h3>
+          <p class="card-copy">Search/filter improvements, richer error states, and startup integration are planned next.</p>
         </div>
         <div class="mini-card">
-          <h3>배포 품질</h3>
-          <p class="card-copy">설정 백업/복원, 시작 프로그램 등록, 설치 파일 서명까지 가야 서비스 제품처럼 보입니다.</p>
+          <h3>Compatibility</h3>
+          <p class="card-copy">Legacy Win32 fallback and INI path are preserved for environments where WinUI runtime/tooling is not available.</p>
         </div>
       </div>
     </div>
 
-    <p class="footer-note">Windows 데스크톱에서 자주 쓰는 것을 더 빨리 여는 경험에 집중한 프로젝트입니다.</p>
+    <p class="footer-note">From a tiny desktop widget to a full settings editor, all paths remain data-compatible with previous versions.</p>
   </div>
 </body>
 </html>

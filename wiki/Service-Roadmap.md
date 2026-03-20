@@ -1,22 +1,24 @@
 # Favorit Service Roadmap
 
-## 서비스 목표
+## Scope
 
-Windows 사용자가 바탕화면에서 가장 자주 여는 항목을 위젯처럼 바로 실행할 수 있는 작은 제품으로 다듬습니다.
+The roadmap focuses on finishing the WinUI 3 settings split, packaging stabilization, and practical operations hardening.
 
 ## Priority 1
 
-- `7.css`와 WinUI 계열 스타일을 더 활용해 진짜 Windows 위젯 같은 UI로 다듬습니다.
-- 검색, 드래그 정렬, 카테고리 그룹, 사용 히스토리 패널을 추가합니다.
-- 설정 백업과 복원 기능을 제공합니다.
+- Settings UI is now WinUI 3 with list + form + command bar.
+- INI read/write service in WinUI uses the exact legacy path and sections.
+- Automatic widget refresh works when `favorite-widget.ini` changes.
+- GitHub Pages and `README.md` reflect the WinUI settings architecture and paths.
 
 ## Priority 2
 
-- 시작 프로그램 등록과 설치 흐름을 더 자연스럽게 만듭니다.
-- SmartScreen 대응 문서와 서명 전략을 준비합니다.
-- 사용자 피드백을 받을 수 있는 이슈 템플릿을 정리합니다.
+- Add CI check for WinUI build environment preconditions.
+- Add optional automated settings snapshot test (INI round-trip and schema).
+- Improve startup reliability and crash-safe handling around settings launch path resolution.
 
 ## Ops
 
-- 설치 파일 버전 관리와 릴리스 노트를 정리합니다.
-- 스크린샷과 데모 자산을 제품 소개용으로 계속 보강합니다.
+- Add explicit release checklist for both widget and settings packages.
+- Publish MSIX settings installer artifact alongside NSIS and ZIP.
+- Expand user troubleshooting documentation for environments where WinUI toolchain is unavailable.

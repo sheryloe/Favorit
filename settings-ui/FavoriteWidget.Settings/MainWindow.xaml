@@ -1,0 +1,159 @@
+<Window
+    x:Class="FavoriteWidget.Settings.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FavoriteWidget.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Favorite Widget Settings"
+    Width="1080"
+    Height="700">
+
+    <Window.Resources>
+        <DataTemplate x:Key="FavoriteTemplate" x:DataType="local:FavoriteItem">
+            <Grid Margin="0,0,0,6" RowSpacing="4">
+                <TextBlock Text="{x:Bind Label}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                <TextBlock
+                    Text="{x:Bind KindLabel}"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <TextBlock
+                    Text="{x:Bind Target}"
+                    FontSize="12"
+                    TextTrimming="CharacterEllipsis"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Padding="16" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <CommandBar Grid.Row="0" HorizontalAlignment="Stretch">
+            <AppBarButton
+                x:Name="NewButton"
+                Icon="Add"
+                Label="New"
+                Click="OnNewClicked" />
+            <AppBarButton
+                x:Name="SaveButton"
+                Icon="Save"
+                Label="Save"
+                Click="OnSaveClicked" />
+            <AppBarButton
+                x:Name="DeleteButton"
+                Icon="Delete"
+                Label="Delete"
+                Click="OnDeleteClicked" />
+            <AppBarButton
+                x:Name="RefreshButton"
+                Icon="Refresh"
+                Label="Reload"
+                Click="OnRefreshClicked" />
+        </CommandBar>
+
+        <Grid Grid.Row="1" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    x:Name="MetaLabel"
+                    Text="Loaded favorites"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    TextWrapping="WrapWholeWords" />
+
+                <TextBlock
+                    Text="Saved favorites"
+                    FontWeight="SemiBold"
+                    Grid.Row="1" />
+
+                <ListView
+                    x:Name="FavoritesList"
+                    Grid.Row="2"
+                    SelectionMode="Single"
+                    SelectionChanged="OnFavoriteSelectionChanged"
+                    ItemTemplate="{StaticResource FavoriteTemplate}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+
+                <TextBlock
+                    x:Name="EmptyState"
+                    Text="No favorites saved yet. Add one from the form on the right."
+                    Visibility="Collapsed"
+                    FontStyle="Italic"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Spacing="8" Grid.Row="0">
+                    <TextBlock Text="Label" />
+                    <TextBox x:Name="LabelTextBox" PlaceholderText="Item label" />
+
+                    <TextBlock Text="Type" />
+                    <ComboBox x:Name="KindCombo" SelectionChanged="OnKindSelectionChanged">
+                        <ComboBoxItem Tag="app" IsSelected="True">Application (.exe)</ComboBoxItem>
+                        <ComboBoxItem Tag="document">Document/File</ComboBoxItem>
+                        <ComboBoxItem Tag="url">URL</ComboBoxItem>
+                    </ComboBox>
+
+                    <TextBlock Text="Target path or URL" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <TextBox
+                            x:Name="TargetTextBox"
+                            PlaceholderText="Input a full file path or URL"
+                            Grid.Column="0" />
+                        <Button
+                            x:Name="PickTargetButton"
+                            Content="Choose"
+                            Click="OnPickTargetClicked"
+                            Grid.Column="1" />
+                    </Grid>
+                </StackPanel>
+
+                <TextBlock
+                    x:Name="StatusText"
+                    Grid.Row="1"
+                    TextWrapping="Wrap"
+                    Text=""
+                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                    FontSize="12"
+                    Visibility="Collapsed" />
+
+                <TextBlock
+                    x:Name="HelpText"
+                    Grid.Row="2"
+                    FontSize="12"
+                    TextWrapping="Wrap"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="Edits are written directly to favorite-widget.ini. Widget and settings window are refreshed in near real-time." />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
