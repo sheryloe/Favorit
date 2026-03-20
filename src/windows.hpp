@@ -16,8 +16,8 @@
 
 struct SearchOutput;
 
-constexpr int kWidgetWidth = 472;
-constexpr int kWidgetHeight = 410;
+constexpr int kWidgetWidth = 240;
+constexpr int kWidgetHeight = 160;
 constexpr int kSettingsWidth = 940;
 constexpr int kSettingsHeight = 620;
 

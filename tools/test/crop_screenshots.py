@@ -34,7 +34,7 @@ def crop_to_exact(image_path: Path, width: int, height: int) -> Tuple[int, int]:
 
 def main() -> int:
     targets = [
-        Target(Path("docs/assets/screenshots/favorite-widget-main.png"), 472, 410),
+        Target(Path("docs/assets/screenshots/favorite-widget-main.png"), 240, 160),
         Target(Path("docs/assets/screenshots/favorite-widget-settings.png"), 940, 620),
     ]
 

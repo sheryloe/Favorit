@@ -60,6 +60,44 @@ constexpr COLORREF kTextMuted = RGB(144, 155, 169);
 constexpr COLORREF kTextDanger = RGB(245, 191, 191);
 constexpr COLORREF kWidgetText = kTextPrimary;
 
+// UI density tuned for a compact 240x160 card composition while keeping
+// the native window size and scaling behavior intact.
+constexpr int kMainMargin = 12;
+constexpr int kMainHeroHeight = 66;
+constexpr int kMainActionSize = 28;
+constexpr int kMainCountWidth = 52;
+constexpr int kMainHeaderRuleY = 11;
+constexpr int kMainColumns = 3;
+constexpr int kMainGap = 10;
+constexpr int kMainGridPadding = 14;
+constexpr int kMainButtonMinWidth = 88;
+constexpr int kMainButtonMaxWidth = 106;
+constexpr int kMainButtonHeight = 86;
+constexpr int kMainPaintRoundRadius = 16;
+constexpr int kMainIconBadgeSize = 34;
+constexpr int kMainIconBadgeRadius = 12;
+constexpr int kMainIconInset = 8;
+constexpr int kMainTileIconPadding = 8;
+
+constexpr int kListItemHeight = 60;
+constexpr int kListBadgeSize = 40;
+constexpr int kListBadgeRadius = 12;
+constexpr int kListIconPadding = 7;
+
+constexpr int kSettingsHeroHeight = 58;
+constexpr int kSettingsGap = 12;
+constexpr int kSettingsPanelRadius = 14;
+constexpr int kSettingsEditHeight = 31;
+constexpr int kSettingsLabelLine = 20;
+constexpr int kSettingsActionHeight = 32;
+constexpr int kSettingsLeftPanelMin = 240;
+constexpr int kSettingsLeftPanelMax = 300;
+
+constexpr int kSearchHeroHeight = 58;
+constexpr int kSearchInputHeight = 30;
+constexpr int kSearchActionHeight = 30;
+constexpr int kSearchItemHeight = 30;
+
 const wchar_t* kTitleText = L"\uD398\uC774\uBCF4\uB9BF";
 const wchar_t* kWidgetSubtitleText = L"\uBE60\uB978 \uC2E4\uD589 \uC704\uC82F";
 const wchar_t* kSettingsTitleText = L"\uD398\uC774\uBCF4\uB9BF \uC124\uC815";
@@ -302,8 +340,8 @@ void DrawTextBlock(HDC dc, const RECT& rect, const std::wstring& text, HFONT fon
 }
 
 void DrawIconBadge(HDC dc, const RECT& rect, COLORREF fill, COLORREF border, UiIcon icon, BYTE opacity = 255) {
-    DrawRoundedRect(dc, rect, fill, border, 14);
-    RECT icon_rect = InsetRectCopy(rect, 8, 8);
+    DrawRoundedRect(dc, rect, fill, border, kMainIconBadgeRadius);
+    RECT icon_rect = InsetRectCopy(rect, kMainIconInset, kMainIconInset);
     DrawUiIcon(dc, icon, icon_rect, opacity);
 }
 
@@ -322,23 +360,22 @@ void DrawFavoriteGridButton(const DRAWITEMSTRUCT* item, HFONT title_font, HFONT 
     if (pressed) {
         OffsetRect(&face_rect, 0, 1);
     }
-    DrawRoundedRect(item->hDC, face_rect, fill, border, 18);
+    DrawRoundedRect(item->hDC, face_rect, fill, border, 14);
 
-    RECT top_rule{face_rect.left + 14, face_rect.top + 12, face_rect.left + 50, face_rect.top + 15};
+    RECT top_rule{face_rect.left + 12, face_rect.top + 10, face_rect.right - 12, face_rect.top + 12};
     DrawRoundedRect(item->hDC, top_rule, focused ? kAccentGlow : kAccentColor, focused ? kAccentGlow : kAccentColor, 4);
 
-    const int icon_plate_size = 52;
-    const int icon_plate_left = face_rect.left + ((face_rect.right - face_rect.left) - icon_plate_size) / 2;
-    const RECT icon_plate{icon_plate_left, face_rect.top + 24, icon_plate_left + icon_plate_size, face_rect.top + 24 + icon_plate_size};
-    DrawRoundedRect(item->hDC, icon_plate, ScaleColor(kPanelElevated, 1.02), ScaleColor(kBorderColor, 1.04), 14);
+    const int icon_plate_left = face_rect.left + ((face_rect.right - face_rect.left) - kMainIconBadgeSize) / 2;
+    const RECT icon_plate{icon_plate_left, face_rect.top + 14, icon_plate_left + kMainIconBadgeSize, face_rect.top + 14 + kMainIconBadgeSize};
+    DrawRoundedRect(item->hDC, icon_plate, ScaleColor(kPanelElevated, 1.02), ScaleColor(kBorderColor, 1.04), kMainIconBadgeRadius);
 
-    RECT icon_rect = InsetRectCopy(icon_plate, 8, 8);
+    RECT icon_rect = InsetRectCopy(icon_plate, kMainTileIconPadding, kMainTileIconPadding);
     if (visual == nullptr || !DrawFavoriteTargetIcon(item->hDC, visual->kind, visual->target, icon_rect)) {
         DrawUiIcon(item->hDC, UiIcon::App, icon_rect, disabled ? 170 : 255);
     }
 
     const std::wstring label = ReadControlText(item->hwndItem);
-    RECT title_rect{face_rect.left + 12, icon_plate.bottom + 14, face_rect.right - 12, face_rect.bottom - 14};
+    RECT title_rect{face_rect.left + 10, icon_plate.bottom + 8, face_rect.right - 10, face_rect.bottom - 8};
     DrawTextBlock(item->hDC, title_rect, label, title_font, text, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
     if (focused) {
@@ -401,17 +438,19 @@ void DrawStyledButton(const DRAWITEMSTRUCT* item, HFONT font, HFONT detail_font)
     if (pressed) {
         OffsetRect(&face_rect, 0, 1);
     }
-    DrawRoundedRect(item->hDC, face_rect, fill, border, tone == ButtonTone::Tile ? 16 : 10);
+    DrawRoundedRect(item->hDC, face_rect, fill, border, tone == ButtonTone::Tile ? 12 : 10);
 
     if (tone == ButtonTone::Tile) {
         const TileKind kind = static_cast<TileKind>(user_data);
-        const RECT badge_rect{face_rect.left + 12, face_rect.top + 10, face_rect.left + 48, face_rect.top + 46};
+        const int badge_size = 36;
+        const int badge_left = face_rect.left + 10;
+        const RECT badge_rect{badge_left, face_rect.top + 10, badge_left + badge_size, face_rect.top + 10 + badge_size};
         DrawIconBadge(item->hDC, badge_rect, badge_fill, badge_border, icon);
 
         const std::wstring text_value = ReadControlText(item->hwndItem);
-        const RECT title_rect{badge_rect.right + 12, face_rect.top + 10, face_rect.right - 34, face_rect.top + 30};
-        const RECT subtitle_rect{badge_rect.right + 12, face_rect.top + 28, face_rect.right - 34, face_rect.bottom - 11};
-        const RECT arrow_rect{face_rect.right - 28, face_rect.top + 18, face_rect.right - 14, face_rect.top + 34};
+        const RECT title_rect{badge_rect.right + 10, face_rect.top + 10, face_rect.right - 30, face_rect.top + 30};
+        const RECT subtitle_rect{badge_rect.right + 10, face_rect.top + 28, face_rect.right - 30, face_rect.bottom - 8};
+        const RECT arrow_rect{face_rect.right - 24, face_rect.top + 18, face_rect.right - 12, face_rect.top + 30};
 
         DrawTextBlock(item->hDC, title_rect, text_value, font, text, DT_LEFT | DT_TOP | DT_SINGLELINE);
         DrawTextBlock(item->hDC, subtitle_rect, TileKindActionText(kind), detail_font != nullptr ? detail_font : font, kTextMuted, DT_LEFT | DT_TOP | DT_SINGLELINE);
@@ -431,7 +470,9 @@ void DrawStyledButton(const DRAWITEMSTRUCT* item, HFONT font, HFONT detail_font)
     }
 
     if (has_icon) {
-        const RECT badge_rect{face_rect.left + 9, face_rect.top + 5, face_rect.left + 29, face_rect.bottom - 5};
+        const int badge_size = 24;
+        const int icon_top = face_rect.top + (face_rect.bottom - face_rect.top - badge_size) / 2;
+        const RECT badge_rect{face_rect.left + 9, icon_top, face_rect.left + 9 + badge_size, icon_top + badge_size};
         DrawIconBadge(item->hDC, badge_rect, badge_fill, badge_border, icon);
         const RECT text_rect{badge_rect.right + 8, face_rect.top, face_rect.right - 10, face_rect.bottom};
         DrawTextBlock(item->hDC, text_rect, ReadControlText(item->hwndItem), font, tone == ButtonTone::Danger ? kTextDanger : text, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
@@ -450,21 +491,21 @@ void DrawFavoriteListItem(const DRAWITEMSTRUCT* item, const FavoriteItem& favori
     }
 
     const bool selected = (item->itemState & ODS_SELECTED) != 0;
-    const RECT face_rect{outer.left + 8, outer.top + 6, outer.right - 8, outer.bottom - 6};
+    const RECT face_rect{outer.left + 8, outer.top + 4, outer.right - 8, outer.bottom - 4};
     const COLORREF fill = selected ? ScaleColor(kPanelElevated, 1.06) : kPanelElevated;
     const COLORREF border = selected ? kAccentColor : ScaleColor(kBorderColor, 0.96);
     DrawRoundedRect(item->hDC, face_rect, fill, border, 14);
 
-    const RECT badge_rect{face_rect.left + 14, face_rect.top + 18, face_rect.left + 54, face_rect.top + 58};
+    const RECT badge_rect{face_rect.left + 10, face_rect.top + 12, face_rect.left + 10 + kListBadgeSize, face_rect.top + 12 + kListBadgeSize};
     const TileKind kind = TileKindFromString(favorite.kind);
-    DrawRoundedRect(item->hDC, badge_rect, ScaleColor(kPanelBackground, 1.04), selected ? kAccentGlow : ScaleColor(kBorderColor, 1.04), 12);
-    RECT badge_icon = InsetRectCopy(badge_rect, 7, 7);
+    DrawRoundedRect(item->hDC, badge_rect, ScaleColor(kPanelBackground, 1.04), selected ? kAccentGlow : ScaleColor(kBorderColor, 1.04), kListBadgeRadius);
+    RECT badge_icon = InsetRectCopy(badge_rect, kListIconPadding, kListIconPadding);
     if (!DrawFavoriteTargetIcon(item->hDC, favorite.kind, favorite.target, badge_icon)) {
         DrawUiIcon(item->hDC, IconForTileKind(kind), badge_icon, 255);
     }
 
-    const RECT title_rect{badge_rect.right + 14, face_rect.top + 18, face_rect.right - 16, face_rect.top + 38};
-    const RECT subtitle_rect{badge_rect.right + 14, face_rect.top + 40, face_rect.right - 16, face_rect.bottom - 14};
+    const RECT title_rect{badge_rect.right + 12, face_rect.top + 10, face_rect.right - 12, face_rect.top + 30};
+    const RECT subtitle_rect{badge_rect.right + 12, face_rect.top + 30, face_rect.right - 12, face_rect.bottom - 10};
     DrawTextBlock(item->hDC, title_rect, favorite.label, title_font, kTextPrimary, DT_LEFT | DT_TOP | DT_SINGLELINE);
     DrawTextBlock(item->hDC, subtitle_rect, KindDisplayName(favorite.kind) + L"  " + FileNameFromPath(favorite.target), detail_font != nullptr ? detail_font : title_font, kTextMuted, DT_LEFT | DT_TOP | DT_SINGLELINE);
 }
@@ -1012,32 +1053,32 @@ LRESULT MainWidgetWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l_p
         FillVerticalGradient(dc, rect, kWidgetBackground, kWidgetBackgroundBottom);
 
         RECT header = rect;
-        header.left += 14;
-        header.top += 14;
-        header.right -= 14;
-        header.bottom = header.top + 76;
-        DrawRoundedRect(dc, header, ScaleColor(kPanelBackground, 1.01), kBorderColor, 18);
+        header.left += kMainMargin;
+        header.top += kMainMargin;
+        header.right -= kMainMargin;
+        header.bottom = header.top + kMainHeroHeight;
+        DrawRoundedRect(dc, header, ScaleColor(kPanelBackground, 1.01), kBorderColor, kMainPaintRoundRadius);
 
         RECT grid_panel = rect;
-        grid_panel.left += 14;
-        grid_panel.right -= 14;
-        grid_panel.top = header.bottom + 12;
-        grid_panel.bottom -= 14;
-        DrawRoundedRect(dc, grid_panel, ScaleColor(kPanelBackground, 0.98), kBorderColor, 18);
+        grid_panel.left += kMainMargin;
+        grid_panel.right -= kMainMargin;
+        grid_panel.top = header.bottom + 10;
+        grid_panel.bottom -= kMainMargin;
+        DrawRoundedRect(dc, grid_panel, ScaleColor(kPanelBackground, 0.98), kBorderColor, kMainPaintRoundRadius);
 
-        RECT title_rule{header.left + 18, header.top + 12, header.left + 112, header.top + 15};
+        RECT title_rule{header.left + 14, header.top + kMainHeaderRuleY, header.left + 104, header.top + kMainHeaderRuleY + 2};
         DrawRoundedRect(dc, title_rule, kAccentColor, kAccentColor, 4);
 
         if (favorite_buttons_.empty()) {
             const RECT empty_badge{
-                grid_panel.left + ((grid_panel.right - grid_panel.left) - 64) / 2,
-                grid_panel.top + 60,
-                grid_panel.left + ((grid_panel.right - grid_panel.left) + 64) / 2,
-                grid_panel.top + 124};
+                grid_panel.left + ((grid_panel.right - grid_panel.left) - 56) / 2,
+                grid_panel.top + 52,
+                grid_panel.left + ((grid_panel.right - grid_panel.left) + 56) / 2,
+                grid_panel.top + 108};
             DrawIconBadge(dc, empty_badge, ScaleColor(kAccentColorSoft, 1.05), kAccentColor, UiIcon::Star);
 
-            RECT title_rect{grid_panel.left + 22, empty_badge.bottom + 22, grid_panel.right - 22, empty_badge.bottom + 48};
-            RECT body_rect{grid_panel.left + 36, empty_badge.bottom + 52, grid_panel.right - 36, empty_badge.bottom + 94};
+            RECT title_rect{grid_panel.left + 18, empty_badge.bottom + 18, grid_panel.right - 18, empty_badge.bottom + 40};
+            RECT body_rect{grid_panel.left + 28, empty_badge.bottom + 42, grid_panel.right - 28, empty_badge.bottom + 72};
             DrawTextBlock(dc, title_rect, kEmptyStateTitle, ui_font_, kTextPrimary, DT_CENTER | DT_TOP | DT_SINGLELINE);
             DrawTextBlock(dc, body_rect, kEmptyStateSubtitle, detail_font_ != nullptr ? detail_font_ : ui_font_, kTextMuted, DT_CENTER | DT_TOP | DT_WORDBREAK);
         }
@@ -1045,7 +1086,7 @@ LRESULT MainWidgetWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l_p
         HPEN border_pen = CreatePen(PS_SOLID, 1, ScaleColor(kBorderColor, 1.08));
         HGDIOBJ old_pen = SelectObject(dc, border_pen);
         HGDIOBJ old_brush = SelectObject(dc, GetStockObject(HOLLOW_BRUSH));
-        RoundRect(dc, rect.left, rect.top, rect.right, rect.bottom, 18, 18);
+        RoundRect(dc, rect.left, rect.top, rect.right, rect.bottom, kMainPaintRoundRadius, kMainPaintRoundRadius);
         SelectObject(dc, old_brush);
         SelectObject(dc, old_pen);
         DeleteObject(border_pen);
@@ -1092,8 +1133,8 @@ LRESULT MainWidgetWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l_p
 }
 
 void MainWidgetWindow::CreateFonts() {
-    ui_font_ = CreateUiFont(12, FW_SEMIBOLD);
-    title_font_ = CreateUiFont(19, FW_BOLD, L"Segoe UI Semibold");
+    ui_font_ = CreateUiFont(11, FW_SEMIBOLD);
+    title_font_ = CreateUiFont(17, FW_BOLD, L"Segoe UI Semibold");
     detail_font_ = CreateUiFont(10, FW_NORMAL);
 }
 
@@ -1151,32 +1192,32 @@ void MainWidgetWindow::LayoutControls() {
     RECT client{};
     GetClientRect(hwnd_, &client);
 
-    const int margin = 14;
-    const int hero_height = 76;
-    const int action_size = 30;
-    const int count_width = 56;
-    const int gap = 14;
-    const int grid_padding = 18;
+    const int margin = kMainMargin;
+    const int hero_height = kMainHeroHeight;
+    const int action_size = kMainActionSize;
+    const int count_width = kMainCountWidth;
+    const int gap = kMainGap;
+    const int grid_padding = kMainGridPadding;
     const bool show_status = IsWindowVisible(status_label_) != FALSE;
     const int status_height = show_status ? 18 : 0;
-    const int columns = 3;
+    const int columns = kMainColumns;
 
     const RECT hero{margin, margin, client.right - margin, margin + hero_height};
-    const RECT shelf{margin, hero.bottom + 12, client.right - margin, client.bottom - margin};
-    const int title_left = hero.left + 18;
-    const int close_x = hero.right - 16 - action_size;
-    const int settings_x = close_x - 12 - action_size;
-    const int count_x = settings_x - 14 - count_width;
-    const int text_width = count_x - title_left - 14;
+    const RECT shelf{margin, hero.bottom + 10, client.right - margin, client.bottom - margin};
+    const int title_left = hero.left + 12;
+    const int close_x = hero.right - 12 - action_size;
+    const int settings_x = close_x - 10 - action_size;
+    const int count_x = settings_x - 10 - count_width;
+    const int text_width = count_x - title_left - 10;
     const int shelf_width = shelf.right - shelf.left - grid_padding * 2;
-    const int button_width = std::clamp(static_cast<int>((shelf_width - gap * (columns - 1)) / columns), 104, 118);
-    const int button_height = 104;
+    const int button_width = std::clamp(static_cast<int>((shelf_width - gap * (columns - 1)) / columns), kMainButtonMinWidth, kMainButtonMaxWidth);
+    const int button_height = kMainButtonHeight;
 
-    MoveWindow(title_label_, title_left, hero.top + 18, text_width, 22, TRUE);
-    MoveWindow(subtitle_label_, title_left, hero.top + 44, text_width, 14, TRUE);
-    MoveWindow(count_label_, count_x, hero.top + 23, count_width, 18, TRUE);
-    MoveWindow(settings_button_, settings_x, hero.top + 20, action_size, action_size, TRUE);
-    MoveWindow(close_button_, close_x, hero.top + 20, action_size, action_size, TRUE);
+    MoveWindow(title_label_, title_left, hero.top + 14, text_width, 20, TRUE);
+    MoveWindow(subtitle_label_, title_left, hero.top + 36, text_width, 14, TRUE);
+    MoveWindow(count_label_, count_x, hero.top + 18, count_width, 18, TRUE);
+    MoveWindow(settings_button_, settings_x, hero.top + 18, action_size, action_size, TRUE);
+    MoveWindow(close_button_, close_x, hero.top + 18, action_size, action_size, TRUE);
 
     if (show_status) {
         MoveWindow(status_label_, shelf.left + 18, shelf.bottom - 16 - status_height, shelf.right - shelf.left - 36, status_height, TRUE);
@@ -1190,11 +1231,11 @@ void MainWidgetWindow::LayoutControls() {
         const int row_width = row_count * button_width + (row_count - 1) * gap;
         const int row_left = shelf.left + grid_padding + std::max((shelf_width - row_width) / 2, 0);
         const int x = row_left + column * (button_width + gap);
-        const int y = shelf.top + 18 + row * (button_height + gap) - scroll_offset_;
+        const int y = shelf.top + 12 + row * (button_height + gap) - scroll_offset_;
         MoveWindow(favorite_buttons_[index], x, y, button_width, button_height, TRUE);
     }
 
-    HRGN region = CreateRoundRectRgn(0, 0, client.right + 1, client.bottom + 1, 18, 18);
+    HRGN region = CreateRoundRectRgn(0, 0, client.right + 1, client.bottom + 1, kMainPaintRoundRadius, kMainPaintRoundRadius);
     SetWindowRgn(hwnd_, region, TRUE);
 }
 
@@ -1227,14 +1268,14 @@ void MainWidgetWindow::UpdateScrollBar() {
     RECT client{};
     GetClientRect(hwnd_, &client);
 
-    const int margin = 14;
-    const int hero_height = 76;
-    const int gap = 14;
-    const int columns = 3;
+    const int margin = kMainMargin;
+    const int hero_height = kMainHeroHeight;
+    const int gap = kMainGap;
+    const int columns = kMainColumns;
     const bool show_status = IsWindowVisible(status_label_) != FALSE;
     const int status_height = show_status ? 18 + 18 : 0;
     const int shelf_height = client.bottom - (margin + hero_height + 12) - margin;
-    const int button_height = 104;
+    const int button_height = kMainButtonHeight;
     const int visible_height = std::max(shelf_height - 36 - status_height, 0);
     const int rows = static_cast<int>((favorite_buttons_.size() + (columns - 1)) / columns);
     const int content_height = rows == 0 ? 0 : rows * button_height + (rows - 1) * gap;
@@ -1372,22 +1413,24 @@ LRESULT SettingsWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l_par
         FillVerticalGradient(dc, rect, kWindowBackground, kWindowBackgroundBottom);
 
         RECT hero = rect;
-        hero.left += 20;
-        hero.top += 14;
-        hero.right -= 20;
-        hero.bottom = hero.top + 68;
-        DrawRoundedRect(dc, hero, ScaleColor(kPanelBackground, 1.01), kBorderColor, 16);
+        const int margin = 16;
+        const int top_margin = 12;
+        hero.left += margin;
+        hero.top += top_margin;
+        hero.right -= margin;
+        hero.bottom = hero.top + kSettingsHeroHeight;
+        DrawRoundedRect(dc, hero, ScaleColor(kPanelBackground, 1.01), kBorderColor, kSettingsPanelRadius);
 
-        const int content_top = hero.bottom + 14;
-        const int content_bottom = rect.bottom - 20;
+        const int content_top = hero.bottom + kSettingsGap;
+        const int content_bottom = rect.bottom - 16;
         const int content_width = hero.right - hero.left;
-        const int left_width = std::clamp(content_width / 3, 260, 320);
+        const int left_width = std::clamp(content_width / 3, kSettingsLeftPanelMin, kSettingsLeftPanelMax);
         RECT left_panel{hero.left, content_top, hero.left + left_width, content_bottom};
-        RECT right_panel{left_panel.right + 14, content_top, hero.right, content_bottom};
-        DrawRoundedRect(dc, left_panel, ScaleColor(kPanelBackground, 0.99), kBorderColor, 16);
-        DrawRoundedRect(dc, right_panel, ScaleColor(kPanelBackground, 0.98), kBorderColor, 16);
+        RECT right_panel{left_panel.right + kSettingsGap, content_top, hero.right, content_bottom};
+        DrawRoundedRect(dc, left_panel, ScaleColor(kPanelBackground, 0.99), kBorderColor, kSettingsPanelRadius);
+        DrawRoundedRect(dc, right_panel, ScaleColor(kPanelBackground, 0.98), kBorderColor, kSettingsPanelRadius);
 
-        RECT accent_strip{hero.left + 18, hero.top + 12, hero.left + 116, hero.top + 15};
+        RECT accent_strip{hero.left + 14, hero.top + 11, hero.left + 108, hero.top + 13};
         DrawRoundedRect(dc, accent_strip, kAccentColor, kAccentColor, 4);
 
         EndPaint(hwnd_, &paint);
@@ -1443,7 +1486,7 @@ LRESULT SettingsWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l_par
     case WM_MEASUREITEM:
         if (w_param == kIdListFavorites) {
             auto* measure = reinterpret_cast<MEASUREITEMSTRUCT*>(l_param);
-            measure->itemHeight = 72;
+            measure->itemHeight = kListItemHeight;
             return TRUE;
         }
         break;
@@ -1494,8 +1537,8 @@ LRESULT SettingsWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l_par
 }
 
 void SettingsWindow::CreateFonts() {
-    ui_font_ = CreateUiFont(13, FW_SEMIBOLD);
-    detail_font_ = CreateUiFont(11, FW_NORMAL);
+    ui_font_ = CreateUiFont(12, FW_SEMIBOLD);
+    detail_font_ = CreateUiFont(10, FW_NORMAL);
 }
 
 void SettingsWindow::CreateControls() {
@@ -1568,9 +1611,9 @@ void SettingsWindow::CreateControls() {
     SendMessageW(kind_combo_, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"\uBB38\uC11C/\uD30C\uC77C"));
     SendMessageW(kind_combo_, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"\uB9C1\uD06C(URL)"));
     SendMessageW(kind_combo_, CB_SETCURSEL, 0, 0);
-    SendMessageW(list_box_, LB_SETITEMHEIGHT, 0, 72);
-    SendMessageW(kind_combo_, CB_SETITEMHEIGHT, static_cast<WPARAM>(-1), 26);
-    SendMessageW(kind_combo_, CB_SETITEMHEIGHT, 0, 24);
+    SendMessageW(list_box_, LB_SETITEMHEIGHT, 0, kListItemHeight);
+    SendMessageW(kind_combo_, CB_SETITEMHEIGHT, static_cast<WPARAM>(-1), 24);
+    SendMessageW(kind_combo_, CB_SETITEMHEIGHT, 0, 22);
     SendMessageW(label_edit_, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
     SendMessageW(target_edit_, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
 
@@ -1591,54 +1634,57 @@ void SettingsWindow::LayoutControls() {
     RECT client{};
     GetClientRect(hwnd_, &client);
 
-    const int margin = 20;
+    const int margin = 16;
     const bool show_status = IsWindowVisible(status_label_) != FALSE;
-    const int hero_height = 68;
-    const int gap = 14;
-    const RECT hero{margin, 14, client.right - margin, 14 + hero_height};
+    const int hero_height = kSettingsHeroHeight;
+    const int gap = kSettingsGap;
+    const RECT hero{margin, 12, client.right - margin, 12 + hero_height};
     const int content_top = hero.bottom + gap;
     const int content_bottom = client.bottom - margin;
     const int content_width = hero.right - hero.left;
-    const int left_width = std::clamp(content_width / 3, 260, 320);
+    const int left_width = std::clamp(content_width / 3, kSettingsLeftPanelMin, kSettingsLeftPanelMax);
     const RECT left_panel{hero.left, content_top, hero.left + left_width, content_bottom};
     const RECT right_panel{left_panel.right + gap, content_top, hero.right, content_bottom};
 
-    MoveWindow(meta_label_, hero.left + 18, hero.top + 28, hero.right - hero.left - 92, 18, TRUE);
+    MoveWindow(meta_label_, hero.left + 14, hero.top + 24, hero.right - hero.left - 92, 18, TRUE);
 
-    MoveWindow(favorites_label_, left_panel.left + 18, left_panel.top + 22, left_panel.right - left_panel.left - 36, 18, TRUE);
-    MoveWindow(list_box_, left_panel.left + 14, left_panel.top + 50, left_panel.right - left_panel.left - 28, left_panel.bottom - left_panel.top - 64, TRUE);
+    MoveWindow(favorites_label_, left_panel.left + 14, left_panel.top + 18, left_panel.right - left_panel.left - 28, 18, TRUE);
+    MoveWindow(list_box_, left_panel.left + 12, left_panel.top + 42, left_panel.right - left_panel.left - 24, left_panel.bottom - left_panel.top - 52, TRUE);
 
-    const int field_left = right_panel.left + 20;
-    const int field_width = right_panel.right - right_panel.left - 40;
-    const int search_button_width = 120;
-    const int edit_height = 34;
-    const int label_gap = 18;
-    int y = right_panel.top + 22;
+    const int field_left = right_panel.left + 14;
+    const int field_width = right_panel.right - right_panel.left - 28;
+    const int search_button_width = 102;
+    const int edit_height = kSettingsEditHeight;
+    const int label_gap = 14;
+    int y = right_panel.top + 20;
 
     if (show_status) {
         MoveWindow(status_label_, field_left, y, field_width, 18, TRUE);
-        y += 28;
+        y += 26;
     }
 
     MoveWindow(name_label_, field_left, y, field_width, 18, TRUE);
-    y += 24;
+    y += kSettingsLabelLine;
     MoveWindow(label_edit_, field_left, y, field_width, edit_height, TRUE);
     y += edit_height + label_gap;
 
     MoveWindow(kind_label_, field_left, y, field_width, 18, TRUE);
-    y += 24;
-    MoveWindow(kind_combo_, field_left, y, field_width, 220, TRUE);
+    y += kSettingsLabelLine;
+    MoveWindow(kind_combo_, field_left, y, field_width, 132, TRUE);
     y += edit_height + label_gap;
 
     MoveWindow(target_label_, field_left, y, field_width, 18, TRUE);
-    y += 24;
+    y += kSettingsLabelLine;
     MoveWindow(target_edit_, field_left, y, field_width - search_button_width - 10, edit_height, TRUE);
     MoveWindow(search_button_, field_left + field_width - search_button_width, y, search_button_width, edit_height, TRUE);
 
-    const int action_y = right_panel.bottom - 54;
-    MoveWindow(save_button_, field_left, action_y, 124, 34, TRUE);
-    MoveWindow(reset_button_, field_left + 136, action_y, 110, 34, TRUE);
-    MoveWindow(delete_button_, field_left + 258, action_y, 110, 34, TRUE);
+    const int action_y = right_panel.bottom - 42;
+    const int action_gap = 10;
+    const int action_width1 = 112;
+    const int action_width2 = 96;
+    MoveWindow(save_button_, field_left, action_y, action_width1, kSettingsActionHeight, TRUE);
+    MoveWindow(reset_button_, field_left + action_width1 + action_gap, action_y, action_width2, kSettingsActionHeight, TRUE);
+    MoveWindow(delete_button_, field_left + action_width1 + action_gap + action_width2 + action_gap, action_y, action_width2, kSettingsActionHeight, TRUE);
 }
 
 void SettingsWindow::UpdateStatus(const std::wstring& message) {
@@ -1884,28 +1930,28 @@ LRESULT SearchDialogWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l
         FillVerticalGradient(dc, rect, kWindowBackground, ScaleColor(kWindowBackgroundBottom, 1.08));
 
         RECT hero = rect;
-        hero.left += 20;
-        hero.right -= 20;
-        hero.top += 14;
-        hero.bottom = hero.top + 72;
-        DrawRoundedRect(dc, hero, kPanelBackground, kBorderColor, 22);
+        hero.left += 16;
+        hero.right -= 16;
+        hero.top += 12;
+        hero.bottom = hero.top + kSearchHeroHeight;
+        DrawRoundedRect(dc, hero, kPanelBackground, kBorderColor, 18);
 
-        RECT search_panel{hero.left, hero.bottom + 14, hero.right, hero.bottom + 134};
-        RECT results_panel{hero.left, search_panel.bottom + 14, hero.right, rect.bottom - 20};
-        DrawRoundedRect(dc, search_panel, ScaleColor(kPanelBackground, 0.98), kBorderColor, 22);
-        DrawRoundedRect(dc, results_panel, ScaleColor(kPanelBackground, 0.96), kBorderColor, 24);
+        RECT search_panel{hero.left, hero.bottom + 10, hero.right, hero.bottom + 118};
+        RECT results_panel{hero.left, search_panel.bottom + 10, hero.right, rect.bottom - 16};
+        DrawRoundedRect(dc, search_panel, ScaleColor(kPanelBackground, 0.98), kBorderColor, 18);
+        DrawRoundedRect(dc, results_panel, ScaleColor(kPanelBackground, 0.96), kBorderColor, 18);
 
         RECT accent_strip = hero;
-        accent_strip.left += 20;
-        accent_strip.top += 14;
-        accent_strip.right = accent_strip.left + 104;
+        accent_strip.left += 16;
+        accent_strip.top += 12;
+        accent_strip.right = accent_strip.left + 96;
         accent_strip.bottom = accent_strip.top + 4;
-        DrawRoundedRect(dc, accent_strip, kAccentColor, kAccentColor, 8);
+        DrawRoundedRect(dc, accent_strip, kAccentColor, kAccentColor, 6);
 
-        RECT search_glow{search_panel.left + 16, search_panel.top + 14, search_panel.left + 88, search_panel.top + 18};
-        RECT results_glow{results_panel.left + 16, results_panel.top + 14, results_panel.left + 88, results_panel.top + 18};
-        DrawRoundedRect(dc, search_glow, ScaleColor(kAccentColor, 0.9), ScaleColor(kAccentColor, 0.9), 6);
-        DrawRoundedRect(dc, results_glow, ScaleColor(kAccentColor, 0.9), ScaleColor(kAccentColor, 0.9), 6);
+        RECT search_glow{search_panel.left + 12, search_panel.top + 10, search_panel.left + 76, search_panel.top + 14};
+        RECT results_glow{results_panel.left + 12, results_panel.top + 10, results_panel.left + 76, results_panel.top + 14};
+        DrawRoundedRect(dc, search_glow, ScaleColor(kAccentColor, 0.9), ScaleColor(kAccentColor, 0.9), 4);
+        DrawRoundedRect(dc, results_glow, ScaleColor(kAccentColor, 0.9), ScaleColor(kAccentColor, 0.9), 4);
 
         EndPaint(hwnd_, &paint);
         return 0;
@@ -2013,8 +2059,8 @@ LRESULT SearchDialogWindow::HandleMessage(UINT message, WPARAM w_param, LPARAM l
 }
 
 void SearchDialogWindow::CreateFonts() {
-    ui_font_ = CreateUiFont(13, FW_SEMIBOLD);
-    detail_font_ = CreateUiFont(11, FW_NORMAL);
+    ui_font_ = CreateUiFont(12, FW_SEMIBOLD);
+    detail_font_ = CreateUiFont(10, FW_NORMAL);
 }
 
 void SearchDialogWindow::CreateControls() {
@@ -2075,36 +2121,36 @@ void SearchDialogWindow::CreateControls() {
 
     SendMessageW(query_edit_, EM_SETCUEBANNER, FALSE, reinterpret_cast<LPARAM>(L"\uD30C\uC77C \uC774\uB984 \uAC80\uC0C9"));
     SendMessageW(query_edit_, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
-    SendMessageW(results_list_, LB_SETITEMHEIGHT, 0, 34);
+    SendMessageW(results_list_, LB_SETITEMHEIGHT, 0, kSearchItemHeight);
 }
 
 void SearchDialogWindow::LayoutControls() {
     RECT client{};
     GetClientRect(hwnd_, &client);
 
-    const int margin = 20;
-    const int hero_height = 72;
-    const int hero_top = 14;
+    const int margin = 16;
+    const int hero_height = kSearchHeroHeight;
+    const int hero_top = 12;
     const RECT hero{margin, hero_top, client.right - margin, hero_top + hero_height};
-    const RECT search_panel{hero.left, hero.bottom + 14, hero.right, hero.bottom + 134};
-    const RECT results_panel{hero.left, search_panel.bottom + 14, hero.right, client.bottom - margin};
+    const RECT search_panel{hero.left, hero.bottom + 10, hero.right, hero.bottom + 112};
+    const RECT results_panel{hero.left, search_panel.bottom + 10, hero.right, client.bottom - 16};
     const int button_width = 96;
-    const int field_left = search_panel.left + 18;
-    const int field_width = search_panel.right - search_panel.left - 36;
-    const int input_y = search_panel.top + 28;
+    const int field_left = search_panel.left + 14;
+    const int field_width = search_panel.right - search_panel.left - 28;
+    const int input_y = search_panel.top + 24;
 
-    MoveWindow(query_label_, field_left, search_panel.top + 18, field_width, 18, TRUE);
-    MoveWindow(query_edit_, field_left, input_y, field_width - button_width - 10, 34, TRUE);
-    MoveWindow(search_button_, field_left + field_width - button_width, input_y, button_width, 34, TRUE);
-    MoveWindow(status_label_, field_left, input_y + 44, field_width, 18, TRUE);
+    MoveWindow(query_label_, field_left, search_panel.top + 14, field_width, 18, TRUE);
+    MoveWindow(query_edit_, field_left, input_y, field_width - button_width - 8, kSearchInputHeight, TRUE);
+    MoveWindow(search_button_, field_left + field_width - button_width, input_y, button_width, kSearchInputHeight, TRUE);
+    MoveWindow(status_label_, field_left, input_y + 36, field_width, 18, TRUE);
 
-    MoveWindow(results_label_, results_panel.left + 18, results_panel.top + 18, results_panel.right - results_panel.left - 36, 18, TRUE);
-    MoveWindow(results_list_, results_panel.left + 14, results_panel.top + 44, results_panel.right - results_panel.left - 28, results_panel.bottom - results_panel.top - 102, TRUE);
+    MoveWindow(results_label_, results_panel.left + 14, results_panel.top + 14, results_panel.right - results_panel.left - 28, 18, TRUE);
+    MoveWindow(results_list_, results_panel.left + 12, results_panel.top + 40, results_panel.right - results_panel.left - 24, results_panel.bottom - results_panel.top - 84, TRUE);
 
     HWND select_button = GetDlgItem(hwnd_, kIdSearchSelect);
     HWND cancel_button = GetDlgItem(hwnd_, kIdSearchCancel);
-    MoveWindow(select_button, results_panel.right - 222, results_panel.bottom - 50, 100, 34, TRUE);
-    MoveWindow(cancel_button, results_panel.right - 110, results_panel.bottom - 50, 96, 34, TRUE);
+    MoveWindow(select_button, results_panel.right - 210, results_panel.bottom - 40, 94, kSearchActionHeight, TRUE);
+    MoveWindow(cancel_button, results_panel.right - 104, results_panel.bottom - 40, 90, kSearchActionHeight, TRUE);
 }
 
 void SearchDialogWindow::StartSearch() {
