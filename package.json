@@ -17,6 +17,7 @@
     "dev": "npm run start",
     "smoke": "npm run configure && npm run build && .\\build\\favorite_widget.exe --smoke-test",
     "test:crop": "python tools/test/crop_screenshots.py",
-    "test:docker": "docker build -f tools/test/Dockerfile -t favorite-widget-test . && docker run --rm favorite-widget-test && docker image rm favorite-widget-test"
+    "test:docker": "docker build -f tools/test/Dockerfile -t favorite-widget-test . && docker run --rm favorite-widget-test && docker image rm favorite-widget-test",
+    "test:pages:docker": "powershell -ExecutionPolicy Bypass -File tools/test/run_pages_docker.ps1"
   }
 }

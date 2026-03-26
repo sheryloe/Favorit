@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/playwright:v1.52.0-noble
+
+WORKDIR /work
+
+ENV CI=1
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+
+COPY package.json /tmp/package.json
+RUN cd /tmp && npm install --no-fund --no-audit playwright@1.52.0
+
+COPY . /work
+RUN mkdir -p /work/build && cp -R /tmp/node_modules /work/node_modules
+
+CMD ["node", "tools/test/playwright-audit.mjs"]
